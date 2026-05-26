@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Ultimate Pokémon Pokédex</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:'Press Start 2P', cursive;
+    min-height:100vh;
+    background:
+    linear-gradient(135deg,#ff6b6b,#feca57,#48dbfb,#5f27cd);
+    background-size:400% 400%;
+    animation:bgMove 15s ease infinite;
+    color:white;
+    padding:20px;
+}
+
+@keyframes bgMove{
+    0%{background-position:0% 50%;}
+    50%{background-position:100% 50%;}
+    100%{background-position:0% 50%;}
+}
+
+.container{
+    max-width:1400px;
+    margin:auto;
+}
+
+header{
+    text-align:center;
+    margin-bottom:30px;
+}
+
+header h1{
+    font-size:3rem;
+    margin-bottom:20px;
+    text-shadow:4px 4px 0px black;
+}
+
+.subtitle{
+    margin-bottom:25px;
+    font-size:0.7rem;
+    color:#fff;
+}
+
+.search-box{
+    display:flex;
+    justify-content:center;
+    gap:10px;
+    flex-wrap:wrap;
+}
+
+.search-box input{
+    width:350px;
+    max-width:90%;
+    padding:15px;
+    border:none;
+    border-radius:15px;
+    outline:none;
+    font-size:0.7rem;
+    background:white;
+}
+
+.search-box button{
+    padding:15px 20px;
+    border:none;
+    border-radius:15px;
+    cursor:pointer;
+    background:#ff0000;
+    color:white;
+    transition:0.2s;
+    font-size:0.6rem;
+}
+
+.search-box button:hover{
+    transform:scale(1.05);
+    background:#cc0000;
+}
+
+.stats-bar{
+    display:flex;
+    justify-content:center;
+    gap:15px;
+    margin-bottom:25px;
+    flex-wrap:wrap;
+}
+
+.stat-box{
+    background:rgba(255,255,255,0.15);
+    backdrop-filter:blur(8px);
+    padding:15px;
+    border-radius:15px;
+    min-width:160px;
+    border:2px solid rgba(255,255,255,0.2);
+}
+
+.stat-box h3{
+    font-size:0.7rem;
+    margin-bottom:10px;
+}
+
+.stat-box p{
+    font-size:0.9rem;
+}
+
+.pokemon-list{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+    gap:20px;
+}
+
+.pokemon-card{
+    background:rgba(255,255,255,0.12);
+    backdrop-filter:blur(12px);
+    border:2px solid rgba(255,255,255,0.2);
+    border-radius:25px;
+    padding:20px;
+    text-align:center;
+    cursor:pointer;
+    transition:0.25s;
+    position:relative;
+    overflow:hidden;
+}
+
+.pokemon-card::before{
+    content:'';
+    position:absolute;
+    width:200px;
+    height:200px;
+    background:rgba(255,255,255,0.08);
+    border-radius:50%;
+    top:-100px;
+    right:-100px;
+}
+
+.pokemon-card:hover{
+    transform:translateY(-8px) scale(1.03);
+    box-shadow:0 0 20px rgba(255,255,255,0.4);
+}
+
+.pokemon-card img{
+    width:140px;
+    height:140px;
+    image-rendering:pixelated;
+}
+
+.pokemon-id{
+    font-size:0.55rem;
+    color:#eee;
+    margin-bottom:10px;
+}
+
+.pokemon-card h3{
+    margin:10px 0;
+    font-size:0.8rem;
+}
+
+.type-container{
+    display:flex;
+    justify-content:center;
+    gap:8px;
+    flex-wrap:wrap;
+    margin-top:10px;
+}
+
+.type{
+    padding:8px 10px;
+    border-radius:20px;
+    font-size:0.45rem;
+    color:white;
+}
+
+.fire{background:#f08030;}
+.water{background:#6890f0;}
+.grass{background:#78c850;}
+.electric{background:#f8d030;color:black;}
+.psychic{background:#f85888;}
+.ice{background:#98d8d8;color:black;}
+.dragon{background:#7038f8;}
+.dark{background:#705848;}
+.fairy{background:#ee99ac;}
+.normal{background:#a8a878;}
+.fighting{background:#c03028;}
+.flying{background:#a890f0;}
+.poison{background:#a040a0;}
+.ground{background:#e0c068;color:black;}
+.rock{background:#b8a038;}
+.bug{background:#a8b820;}
+.ghost{background:#705898;}
+.steel{background:#b8b8d0;color:black;}
+
+.pokemon-details{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.7);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    z-index:1000;
+    padding:20px;
+}
+
+.hidden{
+    display:none;
+}
+
+.details-card{
+    width:500px;
+    max-width:100%;
+    background:white;
+    color:black;
+    border-radius:30px;
+    padding:30px;
+    position:relative;
+    animation:pop 0.3s ease;
+}
+
+@keyframes pop{
+    from{
+        transform:scale(0.7);
+        opacity:0;
+    }
+    to{
+        transform:scale(1);
+        opacity:1;
+    }
+}
+
+#closeBtn{
+    position:absolute;
+    top:15px;
+    right:15px;
+    width:40px;
+    height:40px;
+    border:none;
+    border-radius:50%;
+    background:red;
+    color:white;
+    cursor:pointer;
+    font-size:1rem;
+}
+
+.details-card h2{
+    text-align:center;
+    margin-bottom:20px;
+    font-size:1.3rem;
+}
+
+.details-image{
+    display:flex;
+    justify-content:center;
+    margin-bottom:20px;
+}
+
+.details-image img{
+    width:220px;
+    height:220px;
+}
+
+.info{
+    margin-bottom:15px;
+    font-size:0.65rem;
+    line-height:1.8;
+}
+
+.stats{
+    margin-top:20px;
+}
+
+.stat{
+    margin-bottom:12px;
+}
+
+.stat-name{
+    font-size:0.55rem;
+    margin-bottom:5px;
+}
+
+.bar{
+    height:18px;
+    background:#ddd;
+    border-radius:20px;
+    overflow:hidden;
+}
+
+.fill{
+    height:100%;
+    background:linear-gradient(90deg,#ff0000,#ff9900);
+    border-radius:20px;
+}
+
+.loading{
+    text-align:center;
+    font-size:1rem;
+    margin-top:80px;
+}
+
+@media(max-width:700px){
+
+header h1{
+    font-size:1.7rem;
+}
+
+.pokemon-card img{
+    width:100px;
+    height:100px;
+}
+
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<header>
+    <h1>⚡ Ultimate Pokédex ⚡</h1>
+    <p class="subtitle">Search over 300 Pokémon!</p>
+
+    <div class="search-box">
+        <input
+        type="text"
+        id="searchInput"
+        placeholder="Search Pokémon name or ID..."
+        />
+
+        <button id="randomBtn">Random</button>
+    </div>
+</header>
+
+<div class="stats-bar">
+    <div class="stat-box">
+        <h3>Total Pokémon</h3>
+        <p id="totalPokemon">0</p>
+    </div>
+
+    <div class="stat-box">
+        <h3>Showing</h3>
+        <p id="showingPokemon">0</p>
+    </div>
+</div>
+
+<div id="loading" class="loading">
+    Loading Pokémon...
+</div>
+
+<div id="pokemonList" class="pokemon-list"></div>
+
+</div>
+
+<!-- DETAILS MODAL -->
+<div id="pokemonDetails" class="pokemon-details hidden">
+
+    <div class="details-card">
+
+        <button id="closeBtn">✖</button>
+
+        <h2 id="pokemonName"></h2>
+
+        <div class="details-image">
+            <img id="pokemonImg" src="">
+        </div>
+
+        <div class="info">
+            <strong>ID:</strong>
+            <span id="pokemonId"></span>
+        </div>
+
+        <div class="info">
+            <strong>Type:</strong>
+            <span id="pokemonType"></span>
+        </div>
+
+        <div class="info">
+            <strong>Height:</strong>
+            <span id="pokemonHeight"></span>
+        </div>
+
+        <div class="info">
+            <strong>Weight:</strong>
+            <span id="pokemonWeight"></span>
+        </div>
+
+        <div class="info">
+            <strong>Abilities:</strong>
+            <span id="pokemonAbilities"></span>
+        </div>
+
+        <div class="stats" id="pokemonStats"></div>
+
+    </div>
+
+</div>
+
+<script>
+
+const pokemonList = document.getElementById('pokemonList');
+const searchInput = document.getElementById('searchInput');
+const pokemonDetails = document.getElementById('pokemonDetails');
+const closeBtn = document.getElementById('closeBtn');
+const randomBtn = document.getElementById('randomBtn');
+
+const pokemonName = document.getElementById('pokemonName');
+const pokemonImg = document.getElementById('pokemonImg');
+const pokemonId = document.getElementById('pokemonId');
+const pokemonType = document.getElementById('pokemonType');
+const pokemonHeight = document.getElementById('pokemonHeight');
+const pokemonWeight = document.getElementById('pokemonWeight');
+const pokemonAbilities = document.getElementById('pokemonAbilities');
+const pokemonStats = document.getElementById('pokemonStats');
+
+const totalPokemon = document.getElementById('totalPokemon');
+const showingPokemon = document.getElementById('showingPokemon');
+const loading = document.getElementById('loading');
+
+const POKEMON_COUNT = 300;
+
+let allPokemons = [];
+
+async function fetchPokemons(){
+
+    loading.style.display = 'block';
+
+    const promises = [];
+
+    for(let i = 1; i <= POKEMON_COUNT; i++){
+        promises.push(
+            fetch(`https://pokeapi.co/api/v2/pokemon/${i}`)
+            .then(res => res.json())
+        );
+    }
+
+    allPokemons = await Promise.all(promises);
+
+    loading.style.display = 'none';
+
+    displayPokemons(allPokemons);
+
+    totalPokemon.textContent = POKEMON_COUNT;
+    showingPokemon.textContent = allPokemons.length;
+}
+
+function displayPokemons(pokemons){
+
+    pokemonList.innerHTML = '';
+
+    pokemons.forEach(pokemon => {
+
+        const card = document.createElement('div');
+        card.classList.add('pokemon-card');
+
+        const types = pokemon.types.map(type =>
+            `<span class="type ${type.type.name}">
+                ${type.type.name}
+            </span>`
+        ).join('');
+
+        card.innerHTML = `
+            <div class="pokemon-id">
+                #${pokemon.id.toString().padStart(3,'0')}
+            </div>
+
+            <img src="${pokemon.sprites.other['official-artwork'].front_default}" alt="${pokemon.name}">
+
+            <h3>
+                ${pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1)}
+            </h3>
+
+            <div class="type-container">
+                ${types}
+            </div>
+        `;
+
+        card.addEventListener('click', () => showDetails(pokemon));
+
+        pokemonList.appendChild(card);
+
+    });
+
+    showingPokemon.textContent = pokemons.length;
+}
+
+function showDetails(pokemon){
+
+    pokemonDetails.classList.remove('hidden');
+
+    pokemonName.textContent =
+    pokemon.name.toUpperCase();
+
+    pokemonImg.src =
+    pokemon.sprites.other['official-artwork'].front_default;
+
+    pokemonId.textContent =
+    `#${pokemon.id}`;
+
+    pokemonType.textContent =
+    pokemon.types.map(t => t.type.name).join(', ');
+
+    pokemonHeight.textContent =
+    `${pokemon.height / 10} m`;
+
+    pokemonWeight.textContent =
+    `${pokemon.weight / 10} kg`;
+
+    pokemonAbilities.textContent =
+    pokemon.abilities.map(a => a.ability.name).join(', ');
+
+    pokemonStats.innerHTML = '';
+
+    pokemon.stats.forEach(stat => {
+
+        const statDiv = document.createElement('div');
+
+        statDiv.classList.add('stat');
+
+        statDiv.innerHTML = `
+            <div class="stat-name">
+                ${stat.stat.name.toUpperCase()} - ${stat.base_stat}
+            </div>
+
+            <div class="bar">
+                <div class="fill"
+                style="width:${Math.min(stat.base_stat,100)}%">
+                </div>
+            </div>
+        `;
+
+        pokemonStats.appendChild(statDiv);
+
+    });
+
+}
+
+closeBtn.addEventListener('click', () => {
+    pokemonDetails.classList.add('hidden');
+});
+
+pokemonDetails.addEventListener('click', (e) => {
+    if(e.target === pokemonDetails){
+        pokemonDetails.classList.add('hidden');
+    }
+});
+
+searchInput.addEventListener('input', () => {
+
+    const query =
+    searchInput.value.toLowerCase();
+
+    const filtered =
+    allPokemons.filter(pokemon =>
+        pokemon.name.includes(query) ||
+        pokemon.id.toString() === query
+    );
+
+    displayPokemons(filtered);
+
+});
+
+randomBtn.addEventListener('click', () => {
+
+    const randomPokemon =
+    allPokemons[Math.floor(Math.random() * allPokemons.length)];
+
+    showDetails(randomPokemon);
+
+});
+
+fetchPokemons();
+
+</script>
+
+</body>
+</html>
