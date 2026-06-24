@@ -6,12 +6,15 @@
 
 <title>The Noodle-Hub Pokédex</title>
 
+<!-- Standard Favicon for browser tabs -->
 <link rel="icon" type="image/png" href="https://thenoodle-hub.github.io/Thenoodlehub1.png">
 
+<!-- Apple Touch Icons using Absolute URL to force Safari lookup -->
 <link rel="apple-touch-icon" href="https://thenoodle-hub.github.io/Thenoodlehub1.png">
 <link rel="apple-touch-icon" sizes="152x152" href="https://thenoodle-hub.github.io/Thenoodlehub1.png">
 <link rel="apple-touch-icon" sizes="180x180" href="https://thenoodle-hub.github.io/Thenoodlehub1.png">
 
+<!-- Mobile Web App Optimization Settings -->
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Noodle Pokedex">
@@ -212,13 +215,15 @@ header h1{
     font-size:0.7rem;
 }
 
-/* SEARCH */
+/* SEARCH & AUTH BOX */
 
 .search-box{
     display:flex;
     justify-content:center;
+    align-items:center;
     gap:12px;
     flex-wrap:wrap;
+    margin-bottom: 20px;
 }
 
 .search-box input{
@@ -247,6 +252,59 @@ header h1{
     transform:scale(1.05);
     background:#cc0000;
 }
+
+/* GOOGLE LOGIN BUTTON & USER PROFILE */
+
+.google-btn {
+    background: #4285F4 !important;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.google-btn:hover {
+    background: #357ae8 !important;
+}
+
+.user-profile {
+    display: none; /* Hidden by default until logged in */
+    align-items: center;
+    gap: 12px;
+    background: rgba(255,255,255,0.15);
+    padding: 10px 20px;
+    border-radius: 15px;
+    backdrop-filter: blur(10px);
+}
+
+.user-profile img {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    border: 2px solid white;
+}
+
+.user-profile span {
+    font-size: 0.6rem;
+}
+
+.logout-btn {
+    padding: 10px 15px !important;
+    background: #333 !important;
+    font-size: 0.5rem !important;
+}
+
+.logout-btn:hover {
+    background: #111 !important;
+}
+
+#loginErrorMsg {
+    display: none;
+    color: #ffcccc;
+    font-size: 0.6rem;
+    margin-top: 10px;
+    text-shadow: 1px 1px 0px black;
+}
+
 
 /* STATS */
 
@@ -578,6 +636,8 @@ header h1{
 
 <body>
 
+<!-- INTRO SCREEN -->
+
 <div id="introScreen">
 
     <div class="intro-content">
@@ -603,6 +663,8 @@ header h1{
 
 </div>
 
+<!-- MAIN CONTENT -->
+
 <div class="container">
 
 <header>
@@ -613,27 +675,43 @@ header h1{
 Search • Battle Stats • Shiny Pokémon • Every Generation
 </p>
 
+<!-- NEW LOGIN AND SEARCH SECTION -->
 <div class="search-box">
 
-<input
-type="text"
-id="searchInput"
-placeholder="Search Pokémon by name or ID..."
->
+    <button id="googleLoginBtn" class="google-btn">
+        <!-- SVG Google Icon -->
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+            <path d="M15.545 6.558a9.42 9.42 0 0 1 .139 1.626c0 2.434-.87 4.492-2.384 5.885h.002C11.978 15.292 10.158 16 8 16A8 8 0 1 1 8 0a7.689 7.689 0 0 1 5.352 2.082l-2.284 2.284A4.347 4.347 0 0 0 8 3.166c-2.087 0-3.86 1.408-4.492 3.304a4.792 4.792 0 0 0 0 3.063h.003c.635 1.893 2.405 3.301 4.492 3.301 1.078 0 2.004-.276 2.722-.764h-.003a3.702 3.702 0 0 0 1.599-2.431H8v-3.08h7.545z"/>
+        </svg>
+        Sign in
+    </button>
 
-<button id="randomBtn">
-Random
-</button>
+    <div id="userProfile" class="user-profile">
+        <img id="userImage" src="" alt="User">
+        <span id="userDisplayName"></span>
+        <button id="logoutBtn" class="logout-btn">Sign Out</button>
+    </div>
 
-<button id="themeBtn">
-Theme
-</button>
+    <input
+    type="text"
+    id="searchInput"
+    placeholder="Search Pokémon by name or ID..."
+    >
 
-<button id="shinyBtn">
-Shiny Mode
-</button>
+    <button id="randomBtn">
+    Random
+    </button>
+
+    <button id="themeBtn">
+    Theme
+    </button>
+
+    <button id="shinyBtn">
+    Shiny Mode
+    </button>
 
 </div>
+<div id="loginErrorMsg">Authentication Setup Required - Check instructions below!</div>
 
 </header>
 
@@ -651,45 +729,47 @@ Shiny Mode
 
 </div>
 
+<!-- GENERATIONS -->
+
 <div class="generation-buttons">
 
-<button class="gen-btn" onclick="filterGeneration(1,151)">
+<button class="gen-btn" onclick="window.filterGeneration(1,151)">
 Gen 1
 </button>
 
-<button class="gen-btn" onclick="filterGeneration(152,251)">
+<button class="gen-btn" onclick="window.filterGeneration(152,251)">
 Gen 2
 </button>
 
-<button class="gen-btn" onclick="filterGeneration(252,386)">
+<button class="gen-btn" onclick="window.filterGeneration(252,386)">
 Gen 3
 </button>
 
-<button class="gen-btn" onclick="filterGeneration(387,493)">
+<button class="gen-btn" onclick="window.filterGeneration(387,493)">
 Gen 4
 </button>
 
-<button class="gen-btn" onclick="filterGeneration(494,649)">
+<button class="gen-btn" onclick="window.filterGeneration(494,649)">
 Gen 5
 </button>
 
-<button class="gen-btn" onclick="filterGeneration(650,721)">
+<button class="gen-btn" onclick="window.filterGeneration(650,721)">
 Gen 6
 </button>
 
-<button class="gen-btn" onclick="filterGeneration(722,809)">
+<button class="gen-btn" onclick="window.filterGeneration(722,809)">
 Gen 7
 </button>
 
-<button class="gen-btn" onclick="filterGeneration(810,905)">
+<button class="gen-btn" onclick="window.filterGeneration(810,905)">
 Gen 8
 </button>
 
-<button class="gen-btn" onclick="filterGeneration(906,1025)">
+<button class="gen-btn" onclick="window.filterGeneration(906,1025)">
 Gen 9
 </button>
 
-<button class="gen-btn" onclick="displayPokemons(allPokemons)">
+<button class="gen-btn" onclick="window.displayPokemons(allPokemons)">
 All
 </button>
 
@@ -702,6 +782,8 @@ Loading Pokémon...
 <div id="pokemonList" class="pokemon-list"></div>
 
 </div>
+
+<!-- DETAILS MODAL -->
 
 <div id="pokemonDetails" class="pokemon-details hidden">
 
@@ -746,351 +828,254 @@ Loading Pokémon...
 
 </div>
 
-<script>
 
-const pokemonList =
-document.getElementById('pokemonList');
+<!-- Note: We are using type="module" to allow secure Firebase imports -->
+<script type="module">
 
-const searchInput =
-document.getElementById('searchInput');
+// ==========================================
+// 1. FIREBASE AUTHENTICATION SETUP
+// ==========================================
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
 
-const pokemonDetails =
-document.getElementById('pokemonDetails');
+// *************************************************************************
+// IMPORTANT NOTE FOR GITHUB PAGES:
+// To make this work on YOUR actual Github website, you need to:
+// 1. Go to https://console.firebase.google.com/
+// 2. Create a free project.
+// 3. Enable "Authentication" -> "Sign-in method" -> "Google".
+// 4. Add "thenoodle-hub.github.io" to the "Authorized domains" list.
+// 5. Replace the values in 'firebaseConfig' below with your project's info!
+// *************************************************************************
 
-const closeBtn =
-document.getElementById('closeBtn');
+let firebaseConfig = {
+    apiKey: "YOUR_API_KEY",
+    authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+    projectId: "YOUR_PROJECT_ID",
+    storageBucket: "YOUR_PROJECT_ID.appspot.com",
+    messagingSenderId: "YOUR_SENDER_ID",
+    appId: "YOUR_APP_ID"
+};
 
-const randomBtn =
-document.getElementById('randomBtn');
+// This helps it work if run in a special preview environment
+if (typeof __firebase_config !== 'undefined') {
+    firebaseConfig = JSON.parse(__firebase_config);
+}
 
-const themeBtn =
-document.getElementById('themeBtn');
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const provider = new GoogleAuthProvider();
 
-const shinyBtn =
-document.getElementById('shinyBtn');
+// Auth UI Elements
+const loginBtn = document.getElementById('googleLoginBtn');
+const logoutBtn = document.getElementById('logoutBtn');
+const userProfile = document.getElementById('userProfile');
+const userImage = document.getElementById('userImage');
+const userDisplayName = document.getElementById('userDisplayName');
+const loginErrorMsg = document.getElementById('loginErrorMsg');
 
-const pokemonName =
-document.getElementById('pokemonName');
+// Login Event
+loginBtn.addEventListener('click', () => {
+    loginErrorMsg.style.display = 'none';
+    signInWithPopup(auth, provider).catch((error) => {
+        console.error("Login failed:", error);
+        loginErrorMsg.textContent = "Login Failed: Check your Firebase Config settings!";
+        loginErrorMsg.style.display = 'block';
+    });
+});
 
-const pokemonImg =
-document.getElementById('pokemonImg');
+// Logout Event
+logoutBtn.addEventListener('click', () => {
+    signOut(auth);
+});
 
-const pokemonId =
-document.getElementById('pokemonId');
+// Track User State
+onAuthStateChanged(auth, (user) => {
+    if (user) {
+        // Logged in!
+        loginBtn.style.display = 'none';
+        userProfile.style.display = 'flex';
+        userDisplayName.textContent = user.displayName.split(' ')[0]; // Shows first name
+        userImage.src = user.photoURL;
+        loginErrorMsg.style.display = 'none';
+    } else {
+        // Logged out!
+        loginBtn.style.display = 'flex';
+        userProfile.style.display = 'none';
+    }
+});
 
-const pokemonType =
-document.getElementById('pokemonType');
 
-const pokemonHeight =
-document.getElementById('pokemonHeight');
+// ==========================================
+// 2. EXISTING POKEDEX LOGIC
+// ==========================================
 
-const pokemonWeight =
-document.getElementById('pokemonWeight');
-
-const pokemonAbilities =
-document.getElementById('pokemonAbilities');
-
-const pokemonStats =
-document.getElementById('pokemonStats');
-
-const totalPokemon =
-document.getElementById('totalPokemon');
-
-const showingPokemon =
-document.getElementById('showingPokemon');
-
-const loading =
-document.getElementById('loading');
+const pokemonList = document.getElementById('pokemonList');
+const searchInput = document.getElementById('searchInput');
+const pokemonDetails = document.getElementById('pokemonDetails');
+const closeBtn = document.getElementById('closeBtn');
+const randomBtn = document.getElementById('randomBtn');
+const themeBtn = document.getElementById('themeBtn');
+const shinyBtn = document.getElementById('shinyBtn');
+const pokemonName = document.getElementById('pokemonName');
+const pokemonImg = document.getElementById('pokemonImg');
+const pokemonId = document.getElementById('pokemonId');
+const pokemonType = document.getElementById('pokemonType');
+const pokemonHeight = document.getElementById('pokemonHeight');
+const pokemonWeight = document.getElementById('pokemonWeight');
+const pokemonAbilities = document.getElementById('pokemonAbilities');
+const pokemonStats = document.getElementById('pokemonStats');
+const totalPokemon = document.getElementById('totalPokemon');
+const showingPokemon = document.getElementById('showingPokemon');
+const loading = document.getElementById('loading');
 
 const POKEMON_COUNT = 1025;
 
-let allPokemons = [];
-
+// By making these 'global' by attaching to 'window', 
+// the HTML 'onclick' attributes continue to work seamlessly.
+window.allPokemons = [];
 let shinyMode = false;
 
 async function fetchPokemons(){
-
     loading.style.display = 'block';
-
-    loading.innerHTML =
-    "Loading ALL Pokémon...";
+    loading.innerHTML = "Loading ALL Pokémon...";
 
     try{
-
         const response = await fetch(
         `https://pokeapi.co/api/v2/pokemon?limit=${POKEMON_COUNT}`
         );
-
         const data = await response.json();
-
-        const pokemonPromises =
-        data.results.map(async (pokemon) => {
-
-            const res =
-            await fetch(pokemon.url);
-
+        const pokemonPromises = data.results.map(async (pokemon) => {
+            const res = await fetch(pokemon.url);
             return await res.json();
-
         });
 
-        allPokemons =
-        await Promise.all(pokemonPromises);
+        window.allPokemons = await Promise.all(pokemonPromises);
+        window.displayPokemons(window.allPokemons);
 
-        displayPokemons(allPokemons);
-
-        totalPokemon.textContent =
-        allPokemons.length;
-
-        showingPokemon.textContent =
-        allPokemons.length;
-
+        totalPokemon.textContent = window.allPokemons.length;
+        showingPokemon.textContent = window.allPokemons.length;
         loading.style.display = 'none';
-
     }
-
     catch(error){
-
-        loading.innerHTML =
-        "Failed to load Pokémon.";
-
+        loading.innerHTML = "Failed to load Pokémon.";
         console.error(error);
-
     }
-
 }
 
-function displayPokemons(pokemons){
-
+window.displayPokemons = function(pokemons) {
     pokemonList.innerHTML = '';
-
     pokemons.forEach(pokemon => {
-
-        const card =
-        document.createElement('div');
-
+        const card = document.createElement('div');
         card.classList.add('pokemon-card');
 
-        const types =
-        pokemon.types.map(type => `
-
+        const types = pokemon.types.map(type => `
             <span class="type ${type.type.name}">
                 ${type.type.name}
             </span>
-
         `).join('');
 
         card.innerHTML = `
-
         <div class="pokemon-id">
             #${pokemon.id.toString().padStart(4,'0')}
         </div>
-
         <img
         loading="lazy"
         src="${
             shinyMode
-            ? (
-            pokemon.sprites.other['official-artwork']
-            .front_shiny ||
-            pokemon.sprites.front_shiny
-            )
-            : (
-            pokemon.sprites.other['official-artwork']
-            .front_default ||
-            pokemon.sprites.front_default
-            )
+            ? (pokemon.sprites.other['official-artwork'].front_shiny || pokemon.sprites.front_shiny)
+            : (pokemon.sprites.other['official-artwork'].front_default || pokemon.sprites.front_default)
         }"
-        alt="${pokemon.name}"
-        >
-
+        alt="${pokemon.name}">
         <h3>
-            ${
-                pokemon.name.charAt(0)
-                .toUpperCase() +
-                pokemon.name.slice(1)
-            }
+            ${pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1)}
         </h3>
-
         <div class="type-container">
             ${types}
         </div>
-
         `;
 
         card.addEventListener('click', () => {
-
             showDetails(pokemon);
-
         });
 
         pokemonList.appendChild(card);
-
     });
-
 }
 
-function filterGeneration(start,end){
-
-    const filtered =
-    allPokemons.filter(pokemon =>
-
-        pokemon.id >= start &&
-        pokemon.id <= end
-
+window.filterGeneration = function(start,end) {
+    const filtered = window.allPokemons.filter(pokemon =>
+        pokemon.id >= start && pokemon.id <= end
     );
-
-    displayPokemons(filtered);
-
-    showingPokemon.textContent =
-    filtered.length;
-
+    window.displayPokemons(filtered);
+    showingPokemon.textContent = filtered.length;
 }
 
 function showDetails(pokemon){
-
     pokemonDetails.classList.remove('hidden');
-
-    pokemonName.textContent =
-    pokemon.name.toUpperCase();
-
-    pokemonImg.src =
-    shinyMode
-    ? (
-    pokemon.sprites.other['official-artwork']
-    .front_shiny ||
-    pokemon.sprites.front_shiny
-    )
-    : (
-    pokemon.sprites.other['official-artwork']
-    .front_default ||
-    pokemon.sprites.front_default
-    );
-
-    pokemonId.textContent =
-    `#${pokemon.id}`;
-
-    pokemonType.textContent =
-    pokemon.types
-    .map(t => t.type.name)
-    .join(', ');
-
-    pokemonHeight.textContent =
-    `${pokemon.height / 10} m`;
-
-    pokemonWeight.textContent =
-    `${pokemon.weight / 10} kg`;
-
-    pokemonAbilities.textContent =
-    pokemon.abilities
-    .map(a => a.ability.name)
-    .join(', ');
-
+    pokemonName.textContent = pokemon.name.toUpperCase();
+    pokemonImg.src = shinyMode
+    ? (pokemon.sprites.other['official-artwork'].front_shiny || pokemon.sprites.front_shiny)
+    : (pokemon.sprites.other['official-artwork'].front_default || pokemon.sprites.front_default);
+    
+    pokemonId.textContent = `#${pokemon.id}`;
+    pokemonType.textContent = pokemon.types.map(t => t.type.name).join(', ');
+    pokemonHeight.textContent = `${pokemon.height / 10} m`;
+    pokemonWeight.textContent = `${pokemon.weight / 10} kg`;
+    pokemonAbilities.textContent = pokemon.abilities.map(a => a.ability.name).join(', ');
+    
     pokemonStats.innerHTML = '';
-
     pokemon.stats.forEach(stat => {
-
-        const statDiv =
-        document.createElement('div');
-
+        const statDiv = document.createElement('div');
         statDiv.classList.add('stat');
-
         statDiv.innerHTML = `
-
         <div class="stat-name">
-            ${stat.stat.name.toUpperCase()}
-            - ${stat.base_stat}
+            ${stat.stat.name.toUpperCase()} - ${stat.base_stat}
         </div>
-
         <div class="bar">
-            <div
-            class="fill"
-            style="
-            width:${Math.min(stat.base_stat,100)}%
-            ">
-            </div>
+            <div class="fill" style="width:${Math.min(stat.base_stat,100)}%"></div>
         </div>
-
         `;
-
         pokemonStats.appendChild(statDiv);
-
     });
-
 }
 
 closeBtn.addEventListener('click', () => {
-
     pokemonDetails.classList.add('hidden');
-
 });
 
 pokemonDetails.addEventListener('click', (e) => {
-
     if(e.target === pokemonDetails){
-
         pokemonDetails.classList.add('hidden');
-
     }
-
 });
 
 searchInput.addEventListener('input', () => {
-
-    const query =
-    searchInput.value.toLowerCase();
-
-    const filtered =
-    allPokemons.filter(pokemon =>
-
-        pokemon.name.includes(query) ||
-
-        pokemon.id.toString() === query
-
+    const query = searchInput.value.toLowerCase();
+    const filtered = window.allPokemons.filter(pokemon =>
+        pokemon.name.includes(query) || pokemon.id.toString() === query
     );
-
-    displayPokemons(filtered);
-
-    showingPokemon.textContent =
-    filtered.length;
-
+    window.displayPokemons(filtered);
+    showingPokemon.textContent = filtered.length;
 });
 
 randomBtn.addEventListener('click', () => {
-
-    const randomPokemon =
-
-    allPokemons[
-        Math.floor(
-            Math.random() *
-            allPokemons.length
-        )
-    ];
-
+    const randomPokemon = window.allPokemons[Math.floor(Math.random() * window.allPokemons.length)];
     showDetails(randomPokemon);
-
 });
-
-/* THEME BUTTON */
 
 themeBtn.addEventListener('click', () => {
-
     document.body.classList.toggle('dark-theme');
-
 });
-
-/* SHINY MODE */
 
 shinyBtn.addEventListener('click', () => {
-
     shinyMode = !shinyMode;
-
-    displayPokemons(allPokemons);
-
+    window.displayPokemons(window.allPokemons);
 });
 
+// START
 fetchPokemons();
 
 </script>
-
 </body>
 </html>
