@@ -20,6 +20,10 @@
 <meta name="apple-mobile-web-app-title" content="Noodle Pokedex">
 <meta name="mobile-web-app-capable" content="yes">
 
+<!-- Firebase Compatibility CDN Libraries (Bulletproof loading, no ES Modules block) -->
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+
 <style>
 
 @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
@@ -94,7 +98,7 @@ body{
     align-items:center;
     z-index:99999;
     animation:fadeOut 1s ease forwards;
-    animation-delay:3s;
+    animation-delay:4s; /* Slightly increased so the credits can be seen nicely */
 }
 
 @keyframes fadeOut{
@@ -113,6 +117,7 @@ body{
     flex-wrap:wrap;
     justify-content:center;
     text-align:center;
+    max-width: 90%;
 }
 
 .intro-text h1{
@@ -125,6 +130,27 @@ body{
 .intro-text p{
     font-size:0.8rem;
     color:#dbeafe;
+}
+
+/* Nice Intro Screen Credit and Verified Tick badge */
+.intro-credit {
+    margin-top: 20px;
+    font-size: 0.55rem;
+    color: #a7f3d0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    text-shadow: 2px 2px 0px black;
+    line-height: 1.6;
+}
+
+.verified-tick {
+    width: 16px;
+    height: 16px;
+    fill: #10B981;
+    filter: drop-shadow(0 0 5px #10B981);
+    flex-shrink: 0;
 }
 
 /* POKEBALL */
@@ -188,6 +214,405 @@ body{
         transform:rotate(360deg);
     }
 
+}
+
+/* PORTAL HOME SCREEN PAGE */
+.portal-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: calc(100vh - 40px);
+    padding: 20px;
+    text-align: center;
+    z-index: 100;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.portal-card {
+    background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 3px solid rgba(255, 255, 255, 0.2);
+    border-radius: 30px;
+    padding: 40px;
+    max-width: 700px;
+    width: 100%;
+    box-shadow: 0 0 40px rgba(255, 255, 255, 0.25);
+    margin: auto;
+}
+
+.portal-title {
+    font-size: 1.6rem;
+    margin-bottom: 20px;
+    text-shadow: 3px 3px 0px black;
+    color: #fff;
+    line-height: 1.4;
+}
+
+.portal-desc {
+    font-size: 0.65rem;
+    line-height: 2;
+    margin-bottom: 30px;
+    color: #f3f4f6;
+    text-shadow: 1px 1px 0px black;
+}
+
+.portal-features {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    text-align: left;
+    margin-bottom: 35px;
+    font-size: 0.55rem;
+    line-height: 1.6;
+}
+
+.portal-feature-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: rgba(0, 0, 0, 0.35);
+    padding: 15px;
+    border-radius: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.feature-icon {
+    font-size: 1rem;
+    flex-shrink: 0;
+}
+
+.portal-btn-group {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.portal-btn {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 0.65rem;
+    padding: 18px 20px;
+    background: #ff1f1f;
+    color: white;
+    border: 3px solid black;
+    border-radius: 15px;
+    cursor: pointer;
+    box-shadow: 4px 4px 0px black;
+    transition: 0.2s;
+}
+
+.portal-btn:hover {
+    transform: scale(1.05);
+    background: #cc0000;
+}
+
+.portal-btn:active {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0px black;
+}
+
+.history-btn {
+    background: #48dbfb;
+}
+
+.history-btn:hover {
+    background: #0abde3;
+}
+
+.game-btn {
+    background: #2ecc71;
+}
+
+.game-btn:hover {
+    background: #27ae60;
+}
+
+/* HISTORY PAGE EXTRA STYLES */
+.history-card {
+    text-align: left;
+    max-width: 850px;
+}
+
+.history-card h2 {
+    text-align: center;
+}
+
+.history-section {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 20px;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+.history-section h3 {
+    font-size: 0.75rem;
+    color: #feca57;
+    margin-bottom: 12px;
+    text-shadow: 2px 2px 0px black;
+}
+
+.history-section p {
+    font-size: 0.55rem;
+    line-height: 1.8;
+    color: #f3f4f6;
+}
+
+.back-btn {
+    background: #5f27cd;
+    display: block;
+    margin: 25px auto 0 auto;
+}
+
+.back-btn:hover {
+    background: #4b1fa3;
+}
+
+.pokedex-back-btn {
+    background: #5f27cd !important;
+    font-size: 0.55rem !important;
+    padding: 15px !important;
+}
+
+.pokedex-back-btn:hover {
+    background: #4b1fa3 !important;
+}
+
+/* MINI GAME CONTAINER STYLES */
+.game-card {
+    max-width: 750px;
+    width: 100%;
+}
+
+.game-explore-area {
+    background: rgba(0,0,0,0.5);
+    border: 3px dashed rgba(255,255,255,0.3);
+    border-radius: 20px;
+    padding: 30px;
+    margin: 20px 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.grass-container {
+    display: inline-block;
+    cursor: pointer;
+    margin: 20px 0;
+    transition: transform 0.2s;
+}
+
+.grass-container:hover {
+    transform: scale(1.1);
+}
+
+.shaking-grass {
+    font-size: 4rem;
+    display: inline-block;
+    animation: grassShake 1.2s infinite ease-in-out;
+}
+
+@keyframes grassShake {
+    0%, 100% { transform: rotate(0deg); }
+    20% { transform: rotate(8deg); }
+    40% { transform: rotate(-8deg); }
+    60% { transform: rotate(5deg); }
+    80% { transform: rotate(-5deg); }
+}
+
+.adventure-stats {
+    display: flex;
+    justify-content: space-around;
+    font-size: 0.55rem;
+    background: rgba(255,255,255,0.1);
+    padding: 10px;
+    border-radius: 10px;
+}
+
+/* GAME BATTLE SCREEN STYLES */
+.battle-arena {
+    background: #f0f0f0;
+    color: black;
+    border: 4px solid #333;
+    border-radius: 20px;
+    padding: 20px;
+    min-height: 380px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.2);
+}
+
+.battle-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.battle-hud {
+    background: #eef2f3;
+    border: 3px solid #333;
+    border-radius: 10px;
+    padding: 8px;
+    width: 45%;
+    font-size: 0.45rem;
+}
+
+.battle-hud-name {
+    margin-bottom: 6px;
+    font-weight: bold;
+}
+
+.health-bar-container {
+    height: 12px;
+    background: #ccc;
+    border: 2px solid #333;
+    border-radius: 6px;
+    overflow: hidden;
+    margin: 5px 0;
+}
+
+.health-bar-fill {
+    height: 100%;
+    width: 100%;
+    background: #2ecc71;
+    transition: width 0.5s ease-out, background-color 0.3s;
+}
+
+.battle-sprites {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 15px 0;
+    flex-grow: 1;
+}
+
+.battle-sprite-wrapper {
+    width: 40%;
+    text-align: center;
+}
+
+.battle-sprite {
+    width: 120px;
+    height: 120px;
+    image-rendering: pixelated;
+    transition: transform 0.2s;
+}
+
+/* Animations for hits/attacks */
+.shake-hit {
+    animation: hitShake 0.4s ease-in-out;
+}
+
+.blink-damage {
+    animation: damageBlink 0.5s step-end infinite;
+}
+
+.attack-dash-left {
+    animation: dashLeft 0.3s ease-in-out;
+}
+
+.attack-dash-right {
+    animation: dashRight 0.3s ease-in-out;
+}
+
+@keyframes hitShake {
+    0%, 100% { transform: translateX(0); }
+    20%, 60% { transform: translateX(-10px); }
+    40%, 80% { transform: translateX(10px); }
+}
+
+@keyframes damageBlink {
+    0%, 100% { opacity: 1; filter: invert(0); }
+    50% { opacity: 0.2; filter: invert(1) sepia(1) saturate(5) hue-rotate(330deg); }
+}
+
+@keyframes dashLeft {
+    0% { transform: translateX(0); }
+    50% { transform: translateX(-35px); }
+    100% { transform: translateX(0); }
+}
+
+@keyframes dashRight {
+    0% { transform: translateX(0); }
+    50% { transform: translateX(35px); }
+    100% { transform: translateX(0); }
+}
+
+.battle-dialogue {
+    background: #333;
+    color: white;
+    border: 3px solid #feca57;
+    border-radius: 10px;
+    padding: 12px;
+    font-size: 0.5rem;
+    min-height: 60px;
+    text-align: left;
+    line-height: 1.5;
+}
+
+.battle-controls {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.battle-control-btn {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 0.45rem;
+    padding: 12px;
+    border: 2px solid #333;
+    border-radius: 8px;
+    cursor: pointer;
+    background: #fff;
+    color: black;
+    transition: 0.1s;
+}
+
+.battle-control-btn:hover {
+    background: #ddd;
+}
+
+.battle-control-btn.fight { background: #ff7675; color: white; border-color: #d63031; }
+.battle-control-btn.catch { background: #74b9ff; color: white; border-color: #0984e3; }
+.battle-control-btn.run { background: #ffeaa7; color: black; border-color: #fdcb6e; }
+
+.partner-selection {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 15px;
+}
+
+.partner-btn {
+    padding: 10px;
+    font-size: 0.45rem;
+    border: 2px solid #fff;
+    border-radius: 10px;
+    cursor: pointer;
+    background: rgba(0,0,0,0.5);
+    color: white;
+    font-family: 'Press Start 2P', cursive;
+}
+
+.partner-btn:hover {
+    background: rgba(255,255,255,0.2);
+}
+
+.hidden-screen {
+    display: none !important;
+    opacity: 0;
+    pointer-events: none;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.03); box-shadow: 0 0 20px rgba(255, 31, 31, 0.6), 4px 4px 0px black; }
+    100% { transform: scale(1); }
 }
 
 /* CONTAINER */
@@ -257,7 +682,7 @@ header h1{
 
 .google-btn {
     background: #4285F4 !important;
-    display: flex;
+    display: inline-flex;
     align-items: center;
     gap: 10px;
 }
@@ -297,12 +722,16 @@ header h1{
     background: #111 !important;
 }
 
-#loginErrorMsg {
+#loginStatusMsg {
     display: none;
-    color: #ffcccc;
+    text-align: center;
+    color: #fff;
     font-size: 0.6rem;
     margin-top: 10px;
     text-shadow: 1px 1px 0px black;
+    background: rgba(0, 0, 0, 0.4);
+    padding: 8px;
+    border-radius: 10px;
 }
 
 
@@ -624,9 +1053,48 @@ header h1{
         font-size:0.6rem;
     }
 
+    .intro-credit {
+        font-size: 0.42rem;
+        gap: 5px;
+    }
+
+    .verified-tick {
+        width: 12px;
+        height: 12px;
+    }
+
     .pokeball{
         width:110px;
         height:110px;
+    }
+
+    .portal-card {
+        padding: 25px 15px;
+    }
+
+    .portal-title {
+        font-size: 1.1rem;
+    }
+
+    .portal-desc {
+        font-size: 0.55rem;
+    }
+
+    .portal-features {
+        font-size: 0.48rem;
+    }
+
+    .portal-btn {
+        font-size: 0.52rem;
+        padding: 14px 12px;
+    }
+
+    .history-section h3 {
+        font-size: 0.65rem;
+    }
+
+    .history-section p {
+        font-size: 0.48rem;
     }
 
 }
@@ -635,8 +1103,6 @@ header h1{
 </head>
 
 <body>
-
-<!-- INTRO SCREEN -->
 
 <div id="introScreen">
 
@@ -656,6 +1122,13 @@ header h1{
             <h1>The Noodle-Hub</h1>
 
             <p>Clean • Modern • Pokédex</p>
+            
+            <div class="intro-credit">
+                Created by The Noodle-Hub
+                <svg class="verified-tick" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                </svg>
+            </div>
 
         </div>
 
@@ -663,9 +1136,166 @@ header h1{
 
 </div>
 
-<!-- MAIN CONTENT -->
+<!-- PORTAL HOME SCREEN PAGE -->
+<div id="homeScreenPortal" class="portal-container">
+    <div class="portal-card">
+        <h2 class="portal-title">THE NOODLE-HUB POKÉDEX</h2>
+        <p class="portal-desc">Welcome, Trainer! Step into the ultimate companion device built to explore, analyze, and master the vast universe of Pokémon.</p>
+        
+        <div class="portal-features">
+            <div class="portal-feature-item">
+                <span class="feature-icon">🔍</span>
+                <div><strong>Ultimate Database:</strong> Access details of all 1,025 Pokémon across 9 Generations.</div>
+            </div>
+            <div class="portal-feature-item">
+                <span class="feature-icon">✨</span>
+                <div><strong>Shiny Toggle:</strong> Visualize both standard and rare shiny forms with precise retro pixels.</div>
+            </div>
+            <div class="portal-feature-item">
+                <span class="feature-icon">📊</span>
+                <div><strong>In-Depth Stats:</strong> Track HP, Speed, Attack, Defense, and active special abilities.</div>
+            </div>
+        </div>
 
-<div class="container">
+        <div class="portal-btn-group">
+            <button id="enterPokedexBtn" class="portal-btn">ENTER POKÉDEX ⚡</button>
+            <button id="enterGameBtn" class="portal-btn game-btn">PLAY GAME 🎮</button>
+            <button id="openHistoryBtn" class="portal-btn history-btn">POKÉ HISTORY 📖</button>
+        </div>
+    </div>
+</div>
+
+<div id="historyScreen" class="portal-container hidden-screen">
+    <div class="portal-card history-card">
+        <h2 class="portal-title">📚 POKÉMON ENCYCLOPEDIA</h2>
+        
+        <div class="history-section">
+            <h3>What is Pokémon?</h3>
+            <p>Pokémon (short for Pocket Monsters) is a worldwide franchise centered on fictional creatures called "Pokémon". Humans, known as Pokémon Trainers, catch, collect, and train them to battle each other for sport, bonding, and friendship!</p>
+        </div>
+
+        <div class="history-section">
+            <h3>When was it created?</h3>
+            <p>Pokémon was officially born on February 27, 1996, with the launch of the video games Pokémon Red and Green for the original Nintendo Game Boy in Japan.</p>
+        </div>
+
+        <div class="history-section">
+            <h3>How was it created? (The Game Freak Origins)</h3>
+            <p>The franchise was created by <strong>Satoshi Tajiri</strong>. As a child living in Machida, Tokyo, Satoshi loved exploring forests and catching insects. Over time, as Japan became more urbanized, the forests disappeared, and children began playing indoors.</p>
+            <p style="margin-top: 8px;">When Satoshi saw children playing with Nintendo Game Boys, he envisioned virtual insects crawling across the Game Boy's Link Cable. He founded the independent studio <strong>Game Freak</strong> with his friend <strong>Ken Sugimori</strong> (who designed all of the original 151 monsters). With crucial mentorship from Mario's creator, Shigeru Miyamoto, they spent 6 long, difficult years developing "Capsule Monsters" (later shortened to Pocket Monsters) and nearly went bankrupt before releasing their masterpiece!</p>
+        </div>
+
+        <div class="history-section">
+            <h3>The Nintendo Toy & Game Boy Connection</h3>
+            <p>Did you know Nintendo was founded way back in 1889 as a handmade playing card company? Before making video games, they designed classic toys in Japan! Years later, Satoshi Tajiri combined Nintendo's tech with his childhood love of bug-hunting. He realized the Nintendo Game Boy's Link Cable (which was used to connect two devices together) could let players physically trade creatures with friends—just like trading real toys or card collectables. This awesome concept sparked a global revolution of collectible figures, plushies, and mechanical Pokéball toys!</p>
+        </div>
+
+        <div class="history-section">
+            <h3>The Rarest Pokémon Cards</h3>
+            <p>The Pokémon Trading Card Game (TCG) launched in late 1996 and features some of the most sought-after collector items in history:</p>
+            <p style="margin-top: 8px;">⭐ <strong>Pikachu Illustrator:</strong> The absolute holy grail! Only 39 were given out as prizes to winners of an art contest in Japan in 1997-1998.</p>
+            <p style="margin-top: 8px;">🔥 <strong>1st Edition Shadowless Charizard:</strong> The legendary holographic card from the 1999 Base Set. Its clean "shadowless" borders make it highly prized by classic fans.</p>
+            <p style="margin-top: 8px;">⚡ <strong>Prerelease Raichu:</strong> A mythic card printed with a gold "Prerelease" stamp by accident during early production. Only a tiny handful exist!</p>
+        </div>
+
+        <button id="backToPortalBtn" class="portal-btn back-btn">◀ GO BACK</button>
+    </div>
+</div>
+
+<!-- NEW POKEMON ADVENTURE MINI GAME SCREEN -->
+<div id="gameScreen" class="portal-container hidden-screen">
+    <div class="portal-card game-card">
+        <h2 class="portal-title">🐾 NOODLE WILDERNESS 🐾</h2>
+        <p class="portal-desc" id="gameIntroText">Step into the tall grass to search for wild Pokémon! Level up your partner and catch them all!</p>
+        
+        <!-- Explore Tall Grass Stage -->
+        <div id="exploreStage">
+            <div class="game-explore-area">
+                <div class="grass-container" id="grassButton">
+                    <span class="shaking-grass">🌿</span>
+                    <p style="font-size: 0.5rem; margin-top: 10px; color: #a4b0be;">CLICK THE GRASS!</p>
+                </div>
+            </div>
+            
+            <div class="adventure-stats">
+                <div>Caught: <span id="caughtCount">0</span>/10</div>
+                <div>Partner: <span id="partnerChoiceName">PIKACHU</span> (Lv.<span id="partnerChoiceLv">5</span>)</div>
+            </div>
+
+            <!-- Starter Selection -->
+            <p style="font-size: 0.45rem; margin-top: 15px; color: #feca57;">SWAP STARTER COMPANION:</p>
+            <div class="partner-selection">
+                <button class="partner-btn" onclick="selectStarter('Pikachu', 25)">PIKACHU ⚡</button>
+                <button class="partner-btn" onclick="selectStarter('Charmander', 4)">CHARMANDER 🔥</button>
+                <button class="partner-btn" onclick="selectStarter('Squirtle', 7)">SQUIRTLE 💧</button>
+                <button class="partner-btn" onclick="selectStarter('Bulbasaur', 1)">BULBASAUR 🍃</button>
+            </div>
+        </div>
+
+        <!-- Active Battle Arena Stage -->
+        <div id="battleStage" class="hidden-screen">
+            <div class="battle-arena">
+                <!-- Battle HUD Status Bars -->
+                <div class="battle-header">
+                    <!-- Enemy HUD -->
+                    <div class="battle-hud">
+                        <div class="battle-hud-name" id="enemyName">WILD RATATA</div>
+                        <div>Lv. <span id="enemyLv">4</span></div>
+                        <div class="health-bar-container">
+                            <div class="health-bar-fill" id="enemyHpBar"></div>
+                        </div>
+                        <div style="text-align: right;"><span id="enemyHpText">20/20</span> HP</div>
+                    </div>
+                    
+                    <!-- Player HUD -->
+                    <div class="battle-hud">
+                        <div class="battle-hud-name" id="playerPartnerName">PIKACHU</div>
+                        <div>Lv. <span id="playerPartnerLv">5</span></div>
+                        <div class="health-bar-container">
+                            <div class="health-bar-fill" id="playerHpBar"></div>
+                        </div>
+                        <div><span id="playerHpText">24/24</span> HP</div>
+                    </div>
+                </div>
+
+                <!-- Dual View Combat Sprites -->
+                <div class="battle-sprites">
+                    <div class="battle-sprite-wrapper">
+                        <!-- Back View Player Starter -->
+                        <img id="playerSpriteImg" class="battle-sprite" src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/25.png" alt="My Starter">
+                    </div>
+                    <div class="battle-sprite-wrapper">
+                        <!-- Front View Enemy Wild -->
+                        <img id="enemySpriteImg" class="battle-sprite" src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/19.png" alt="Wild Pokémon">
+                    </div>
+                </div>
+
+                <!-- Text Dialogue Window -->
+                <div class="battle-dialogue" id="battleLog">
+                    A wild Pokémon has appeared! What will you do?
+                </div>
+
+                <!-- Attack Action Buttons -->
+                <div class="battle-controls" id="actionControls">
+                    <button class="battle-control-btn fight" onclick="showMoveList()">⚔️ FIGHT</button>
+                    <button class="battle-control-btn catch" onclick="throwPokeBall()">🔴 CATCH</button>
+                    <button class="battle-control-btn run" onclick="escapeBattle()">🏃 RUN</button>
+                </div>
+
+                <!-- Dynamic Move Select Buttons list -->
+                <div class="battle-controls hidden-screen" id="moveControls">
+                    <!-- Loaded dynamically via JavaScript based on starter choice -->
+                </div>
+            </div>
+        </div>
+
+        <button id="backToPortalFromGame" class="portal-btn back-btn" style="margin-top: 25px;">◀ MAIN MENU</button>
+    </div>
+</div>
+
+<!-- MAIN POKEDEX CONTENT -->
+
+<div id="pokedexApp" class="container hidden-screen">
 
 <header>
 
@@ -675,11 +1305,12 @@ header h1{
 Search • Battle Stats • Shiny Pokémon • Every Generation
 </p>
 
-<!-- NEW LOGIN AND SEARCH SECTION -->
 <div class="search-box">
 
+    <!-- HOME BACK BUTTON INSIDE POKEDEX HEADER -->
+    <button id="pokedexBackBtn" class="portal-btn pokedex-back-btn">◀ HOME</button>
+
     <button id="googleLoginBtn" class="google-btn">
-        <!-- SVG Google Icon -->
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
             <path d="M15.545 6.558a9.42 9.42 0 0 1 .139 1.626c0 2.434-.87 4.492-2.384 5.885h.002C11.978 15.292 10.158 16 8 16A8 8 0 1 1 8 0a7.689 7.689 0 0 1 5.352 2.082l-2.284 2.284A4.347 4.347 0 0 0 8 3.166c-2.087 0-3.86 1.408-4.492 3.304a4.792 4.792 0 0 0 0 3.063h.003c.635 1.893 2.405 3.301 4.492 3.301 1.078 0 2.004-.276 2.722-.764h-.003a3.702 3.702 0 0 0 1.599-2.431H8v-3.08h7.545z"/>
         </svg>
@@ -711,7 +1342,7 @@ Search • Battle Stats • Shiny Pokémon • Every Generation
     </button>
 
 </div>
-<div id="loginErrorMsg">Authentication Setup Required - Check instructions below!</div>
+<div id="loginStatusMsg"></div>
 
 </header>
 
@@ -728,8 +1359,6 @@ Search • Battle Stats • Shiny Pokémon • Every Generation
 </div>
 
 </div>
-
-<!-- GENERATIONS -->
 
 <div class="generation-buttons">
 
@@ -769,7 +1398,7 @@ Gen 8
 Gen 9
 </button>
 
-<button class="gen-btn" onclick="window.displayPokemons(allPokemons)">
+<button class="gen-btn" onclick="window.displayPokemons(window.allPokemons)">
 All
 </button>
 
@@ -782,8 +1411,6 @@ Loading Pokémon...
 <div id="pokemonList" class="pokemon-list"></div>
 
 </div>
-
-<!-- DETAILS MODAL -->
 
 <div id="pokemonDetails" class="pokemon-details hidden">
 
@@ -829,25 +1456,12 @@ Loading Pokémon...
 </div>
 
 
-<!-- Note: We are using type="module" to allow secure Firebase imports -->
-<script type="module">
-
+<script>
 // ==========================================
-// 1. FIREBASE AUTHENTICATION SETUP
+// 1. FIREBASE AUTHENTICATION SETUP (SECURE FOR PWA & STANDALONE)
 // ==========================================
-import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
 
-// *************************************************************************
-// IMPORTANT NOTE FOR GITHUB PAGES:
-// To make this work on YOUR actual Github website, you need to:
-// 1. Go to https://console.firebase.google.com/
-// 2. Create a free project.
-// 3. Enable "Authentication" -> "Sign-in method" -> "Google".
-// 4. Add "thenoodle-hub.github.io" to the "Authorized domains" list.
-// 5. Replace the values in 'firebaseConfig' below with your project's info!
-// *************************************************************************
-
+// Your Firebase Config
 let firebaseConfig = {
     apiKey: "YOUR_API_KEY",
     authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
@@ -857,14 +1471,13 @@ let firebaseConfig = {
     appId: "YOUR_APP_ID"
 };
 
-// This helps it work if run in a special preview environment
+// Check if run in specific environments
 if (typeof __firebase_config !== 'undefined') {
     firebaseConfig = JSON.parse(__firebase_config);
 }
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const provider = new GoogleAuthProvider();
+// Check if using default placeholder config
+const isDemoMode = !firebaseConfig.apiKey || firebaseConfig.apiKey.includes("YOUR_");
 
 // Auth UI Elements
 const loginBtn = document.getElementById('googleLoginBtn');
@@ -872,38 +1485,120 @@ const logoutBtn = document.getElementById('logoutBtn');
 const userProfile = document.getElementById('userProfile');
 const userImage = document.getElementById('userImage');
 const userDisplayName = document.getElementById('userDisplayName');
-const loginErrorMsg = document.getElementById('loginErrorMsg');
+const loginStatusMsg = document.getElementById('loginStatusMsg');
 
-// Login Event
-loginBtn.addEventListener('click', () => {
-    loginErrorMsg.style.display = 'none';
-    signInWithPopup(auth, provider).catch((error) => {
-        console.error("Login failed:", error);
-        loginErrorMsg.textContent = "Login Failed: Check your Firebase Config settings!";
-        loginErrorMsg.style.display = 'block';
-    });
-});
+// Detect if running as standalone home screen "web app"
+const isStandalone = window.navigator.standalone || window.matchMedia('(display-mode: standalone)').matches;
 
-// Logout Event
-logoutBtn.addEventListener('click', () => {
-    signOut(auth);
-});
+let auth = null;
+let provider = null;
 
-// Track User State
-onAuthStateChanged(auth, (user) => {
-    if (user) {
-        // Logged in!
-        loginBtn.style.display = 'none';
-        userProfile.style.display = 'flex';
-        userDisplayName.textContent = user.displayName.split(' ')[0]; // Shows first name
-        userImage.src = user.photoURL;
-        loginErrorMsg.style.display = 'none';
+// Graceful execution wrapper (Prevents overall page crash if Firebase fails to load)
+function initFirebaseSecurely() {
+    // If we have active keys and Firebase libraries loaded successfully
+    if (!isDemoMode && typeof firebase !== 'undefined') {
+        try {
+            firebase.initializeApp(firebaseConfig);
+            auth = firebase.auth();
+            provider = new firebase.auth.GoogleAuthProvider();
+
+            // Handle standard redirect responses when returning to PWA standalone home screen
+            auth.getRedirectResult().then((result) => {
+                if (result && result.user) {
+                    updateUserUI(result.user);
+                }
+            }).catch((error) => {
+                console.error("Redirect login failed:", error);
+                showStatus("Redirect login error. Ensure authorized domains are set in Firebase!", "#ff6b6b");
+            });
+
+            // Track User State changes
+            auth.onAuthStateChanged((user) => {
+                if (user) {
+                    updateUserUI(user);
+                } else {
+                    showLoggedOutUI();
+                }
+            });
+        } catch (e) {
+            console.warn("Firebase failed, switching to demo mode.", e);
+            startDemoSimulation();
+        }
     } else {
-        // Logged out!
-        loginBtn.style.display = 'flex';
-        userProfile.style.display = 'none';
+        startDemoSimulation();
+    }
+}
+
+function startDemoSimulation() {
+    showStatus("Demo Mode active. Connect Firebase configurations to enable Google authentication!", "#feca57");
+    
+    // Read local simulated login state if saved
+    const savedDemoUser = localStorage.getItem("demo_noodle_user");
+    if (savedDemoUser) {
+        updateUserUI(JSON.parse(savedDemoUser));
+    }
+}
+
+// Handle Login Button Click
+loginBtn.addEventListener('click', () => {
+    if (isDemoMode || typeof firebase === 'undefined') {
+        // Simulated local login (Immediate demonstration)
+        const mockUser = {
+            displayName: "Trainer Noodle",
+            photoURL: "https://thenoodle-hub.github.io/Thenoodlehub1.png"
+        };
+        localStorage.setItem("demo_noodle_user", JSON.stringify(mockUser));
+        updateUserUI(mockUser);
+        showStatus("Signed in as Trainer Noodle (Local Sim Mode)!", "#2ecc71");
+    } else {
+        if (isStandalone) {
+            // iOS standalone "Add to Home Screen" environment blocks popup actions. Use secure redirection.
+            showStatus("Initiating secure redirect...", "#48dbfb");
+            auth.signInWithRedirect(provider).catch(err => {
+                console.error(err);
+                showStatus("Redirect error: " + err.message, "#ff6b6b");
+            });
+        } else {
+            // Standard browser tab execution
+            auth.signInWithPopup(provider).then((result) => {
+                updateUserUI(result.user);
+            }).catch((error) => {
+                console.error("Login failed:", error);
+                showStatus("Login Failed! Please verify Authorized Domains on your Firebase Console.", "#ff6b6b");
+            });
+        }
     }
 });
+
+// Handle Logout Button Click
+logoutBtn.addEventListener('click', () => {
+    if (isDemoMode || typeof firebase === 'undefined') {
+        localStorage.removeItem("demo_noodle_user");
+        showLoggedOutUI();
+    } else {
+        auth.signOut().then(() => {
+            showLoggedOutUI();
+        });
+    }
+});
+
+function updateUserUI(user) {
+    loginBtn.style.display = 'none';
+    userProfile.style.display = 'inline-flex';
+    userDisplayName.textContent = user.displayName.split(' ')[0].toUpperCase();
+    userImage.src = user.photoURL || "https://thenoodle-hub.github.io/Thenoodlehub1.png";
+}
+
+function showLoggedOutUI() {
+    loginBtn.style.display = 'inline-flex';
+    userProfile.style.display = 'none';
+}
+
+function showStatus(msg, color) {
+    loginStatusMsg.style.display = 'block';
+    loginStatusMsg.style.color = color;
+    loginStatusMsg.textContent = msg;
+}
 
 
 // ==========================================
@@ -931,8 +1626,6 @@ const loading = document.getElementById('loading');
 
 const POKEMON_COUNT = 1025;
 
-// By making these 'global' by attaching to 'window', 
-// the HTML 'onclick' attributes continue to work seamlessly.
 window.allPokemons = [];
 let shinyMode = false;
 
@@ -1073,7 +1766,464 @@ shinyBtn.addEventListener('click', () => {
     window.displayPokemons(window.allPokemons);
 });
 
-// START
+
+// ==========================================
+// 3. RETRO GAME ENGINE LOGIC (NOODLE WILDERNESS)
+// ==========================================
+
+let caughtCount = 0;
+let partner = {
+    name: "PIKACHU",
+    id: 25,
+    lv: 5,
+    maxHp: 24,
+    hp: 24,
+    moves: [
+        { name: "THUNDERBOLT", power: 90, type: "electric" },
+        { name: "QUICK ATTACK", power: 40, type: "normal" },
+        { name: "IRON TAIL", power: 100, type: "iron" },
+        { name: "THUNDER WAVE", power: 0, type: "electric" }
+    ]
+};
+
+let activeWildPokemon = null;
+let isBattleOngoing = false;
+
+// Simple Pool of wild monsters
+const wildPool = [
+    { name: "RATTATA", id: 19, hp: 20, maxHp: 20, lv: 3 },
+    { name: "PIDGEY", id: 16, hp: 22, maxHp: 22, lv: 4 },
+    { name: "CATERPIE", id: 10, hp: 18, maxHp: 18, lv: 2 },
+    { name: "ODDISH", id: 43, hp: 25, maxHp: 25, lv: 5 },
+    { name: "MEW", id: 151, hp: 45, maxHp: 45, lv: 10 } // Rare!
+];
+
+// Starter configuration data
+const starters = {
+    'Pikachu': {
+        name: "PIKACHU",
+        id: 25,
+        maxHp: 24,
+        moves: [
+            { name: "THUNDERBOLT", power: 90, type: "electric" },
+            { name: "QUICK ATTACK", power: 40, type: "normal" },
+            { name: "IRON TAIL", power: 100, type: "iron" },
+            { name: "THUNDER WAVE", power: 0, type: "electric" }
+        ]
+    },
+    'Charmander': {
+        name: "CHARMANDER",
+        id: 4,
+        maxHp: 28,
+        moves: [
+            { name: "FLAMETHROWER", power: 90, type: "fire" },
+            { name: "SCRATCH", power: 40, type: "normal" },
+            { name: "EMBER", power: 40, type: "fire" },
+            { name: "DRAGON RAGE", power: 40, type: "dragon" }
+        ]
+    },
+    'Squirtle': {
+        name: "SQUIRTLE",
+        id: 7,
+        maxHp: 30,
+        moves: [
+            { name: "HYDRO PUMP", power: 110, type: "water" },
+            { name: "TACKLE", power: 40, type: "normal" },
+            { name: "WATER GUN", power: 40, type: "water" },
+            { name: "BITE", power: 60, type: "dark" }
+        ]
+    },
+    'Bulbasaur': {
+        name: "BULBASAUR",
+        id: 1,
+        maxHp: 32,
+        moves: [
+            { name: "SOLAR BEAM", power: 120, type: "grass" },
+            { name: "VINE WHIP", power: 45, type: "grass" },
+            { name: "RAZOR LEAF", power: 55, type: "grass" },
+            { name: "TACKLE", power: 40, type: "normal" }
+        ]
+    }
+};
+
+// Swap Active Partner Pokémon
+window.selectStarter = function(name) {
+    const data = starters[name];
+    partner.name = data.name;
+    partner.id = data.id;
+    partner.maxHp = data.maxHp;
+    partner.hp = data.maxHp;
+    partner.moves = data.moves;
+    
+    document.getElementById('partnerChoiceName').textContent = partner.name;
+    document.getElementById('partnerChoiceLv').textContent = partner.lv;
+}
+
+// Explore grass click handler
+document.getElementById('grassButton').addEventListener('click', () => {
+    // Shaking Animation Visual Effect
+    const grass = document.querySelector('.shaking-grass');
+    grass.style.animation = 'none';
+    void grass.offsetWidth; // trigger reflow
+    grass.style.animation = 'grassShake 0.4s 2 ease-in-out';
+    
+    setTimeout(() => {
+        triggerWildEncounter();
+    }, 500);
+});
+
+// Start Combat Screen
+function triggerWildEncounter() {
+    // Select random monster
+    const roll = Math.random();
+    let selected = wildPool[Math.floor(Math.random() * (wildPool.length - 1))];
+    if (roll > 0.95) {
+        selected = wildPool[4]; // 5% chance for legendary Mew!
+    }
+
+    // Set Up Encounter Data
+    activeWildPokemon = {
+        name: selected.name,
+        id: selected.id,
+        lv: selected.lv,
+        hp: selected.hp,
+        maxHp: selected.maxHp
+    };
+
+    // Render sprites and HUD
+    document.getElementById('enemyName').textContent = activeWildPokemon.name;
+    document.getElementById('enemyLv').textContent = activeWildPokemon.lv;
+    document.getElementById('enemySpriteImg').src = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${activeWildPokemon.id}.png`;
+    
+    // Player Starters Status Reset
+    partner.hp = partner.maxHp;
+    document.getElementById('playerPartnerName').textContent = partner.name;
+    document.getElementById('playerPartnerLv').textContent = partner.lv;
+    document.getElementById('playerSpriteImg').src = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/${partner.id}.png`;
+
+    updateHpBars();
+
+    // Toggle battle stage views
+    document.getElementById('exploreStage').classList.add('hidden-screen');
+    document.getElementById('battleStage').classList.remove('hidden-screen');
+    
+    // Battle Initial Logs
+    const log = document.getElementById('battleLog');
+    log.textContent = `A wild ${activeWildPokemon.name} (Lv. ${activeWildPokemon.lv}) appeared from the tall grass!`;
+    
+    // Reset Action controls
+    document.getElementById('actionControls').classList.remove('hidden-screen');
+    document.getElementById('moveControls').classList.add('hidden-screen');
+    isBattleOngoing = true;
+}
+
+function updateHpBars() {
+    const enemyPercent = (activeWildPokemon.hp / activeWildPokemon.maxHp) * 100;
+    const playerPercent = (partner.hp / partner.maxHp) * 100;
+
+    const enemyBar = document.getElementById('enemyHpBar');
+    const playerBar = document.getElementById('playerHpBar');
+
+    enemyBar.style.width = `${enemyPercent}%`;
+    playerBar.style.width = `${playerPercent}%`;
+
+    // Dynamic Color Coding (Green / Yellow / Red)
+    setBarColor(enemyBar, enemyPercent);
+    setBarColor(playerBar, playerPercent);
+
+    document.getElementById('enemyHpText').textContent = `${activeWildPokemon.hp}/${activeWildPokemon.maxHp}`;
+    document.getElementById('playerHpText').textContent = `${partner.hp}/${partner.maxHp}`;
+}
+
+function setBarColor(bar, percentage) {
+    if (percentage > 50) {
+        bar.style.backgroundColor = '#2ecc71';
+    } else if (percentage > 20) {
+        bar.style.backgroundColor = '#f1c40f';
+    } else {
+        bar.style.backgroundColor = '#e74c3c';
+    }
+}
+
+// Display Move Lists Selection Box
+window.showMoveList = function() {
+    const listControls = document.getElementById('moveControls');
+    const mainControls = document.getElementById('actionControls');
+    
+    listControls.innerHTML = '';
+    
+    partner.moves.forEach(move => {
+        const btn = document.createElement('button');
+        btn.classList.add('battle-control-btn');
+        btn.textContent = move.name;
+        btn.addEventListener('click', () => performAttack(move));
+        listControls.appendChild(btn);
+    });
+
+    // Add back return button
+    const backBtn = document.createElement('button');
+    backBtn.classList.add('battle-control-btn');
+    backBtn.textContent = "◀ CANCEL";
+    backBtn.style.background = "#bdc3c7";
+    backBtn.addEventListener('click', () => {
+        listControls.classList.add('hidden-screen');
+        mainControls.classList.remove('hidden-screen');
+    });
+    listControls.appendChild(backBtn);
+
+    mainControls.classList.add('hidden-screen');
+    listControls.classList.remove('hidden-screen');
+}
+
+// Perform Player attack sequences
+function performAttack(move) {
+    if (!isBattleOngoing) return;
+
+    const log = document.getElementById('battleLog');
+    const listControls = document.getElementById('moveControls');
+    
+    listControls.classList.add('hidden-screen');
+    
+    // Dash Animations
+    const playerImg = document.getElementById('playerSpriteImg');
+    const enemyImg = document.getElementById('enemySpriteImg');
+
+    playerImg.classList.add('attack-dash-right');
+    
+    log.textContent = `${partner.name} used ${move.name}!`;
+
+    setTimeout(() => {
+        playerImg.classList.remove('attack-dash-right');
+        
+        // Damage calculations
+        let dmg = Math.floor((move.power / 5) + Math.random() * 3);
+        if (move.power === 0) dmg = 0; // status moves
+        
+        activeWildPokemon.hp = Math.max(0, activeWildPokemon.hp - dmg);
+        
+        // Shake enemy hit
+        enemyImg.classList.add('shake-hit', 'blink-damage');
+        updateHpBars();
+
+        setTimeout(() => {
+            enemyImg.classList.remove('shake-hit', 'blink-damage');
+            
+            if (activeWildPokemon.hp <= 0) {
+                // Fainted State!
+                log.textContent = `The wild ${activeWildPokemon.name} fainted! You won!`;
+                // Partner gains level up randomly
+                if (Math.random() > 0.6) {
+                    partner.lv++;
+                    log.textContent += ` Your companion leveled up to Lv. ${partner.lv}!`;
+                }
+                isBattleOngoing = false;
+                setTimeout(endBattleScreen, 2200);
+            } else {
+                // Enemy turn execution
+                executeEnemyTurn();
+            }
+        }, 600);
+
+    }, 300);
+}
+
+// Enemy AI attack turn
+function executeEnemyTurn() {
+    const log = document.getElementById('battleLog');
+    const playerImg = document.getElementById('playerSpriteImg');
+    const enemyImg = document.getElementById('enemySpriteImg');
+
+    log.textContent = `Wild ${activeWildPokemon.name} is preparing to strike...`;
+
+    setTimeout(() => {
+        enemyImg.classList.add('attack-dash-left');
+        log.textContent = `Wild ${activeWildPokemon.name} used Tackle!`;
+
+        setTimeout(() => {
+            enemyImg.classList.remove('attack-dash-left');
+            
+            // Standard enemy tackle damage
+            let dmg = Math.floor(3 + Math.random() * 3);
+            partner.hp = Math.max(0, partner.hp - dmg);
+            
+            playerImg.classList.add('shake-hit', 'blink-damage');
+            updateHpBars();
+
+            setTimeout(() => {
+                playerImg.classList.remove('shake-hit', 'blink-damage');
+                
+                if (partner.hp <= 0) {
+                    log.textContent = `${partner.name} fainted! You whited out...`;
+                    isBattleOngoing = false;
+                    setTimeout(endBattleScreen, 2200);
+                } else {
+                    // Ready for player next action
+                    log.textContent = `What will ${partner.name} do?`;
+                    document.getElementById('actionControls').classList.remove('hidden-screen');
+                }
+            }, 600);
+
+        }, 300);
+    }, 1000);
+}
+
+// Throw capture Ball
+window.throwPokeBall = function() {
+    if (!isBattleOngoing) return;
+    const log = document.getElementById('battleLog');
+    const mainControls = document.getElementById('actionControls');
+    
+    mainControls.classList.add('hidden-screen');
+    log.textContent = `Trainer threw a Poké Ball!`;
+
+    // Catch Probability (Lower health = higher capture rate)
+    const hpRatio = activeWildPokemon.hp / activeWildPokemon.maxHp;
+    const catchChance = 0.95 - (hpRatio * 0.6); // maximum 95%, minimum 35% chance. Legendary Mew has lower rate.
+    const isLegendary = activeWildPokemon.id === 151;
+    const finalChance = isLegendary ? (catchChance * 0.3) : catchChance;
+
+    const enemyImg = document.getElementById('enemySpriteImg');
+    enemyImg.style.transition = 'transform 0.5s, opacity 0.5s';
+    enemyImg.style.transform = 'scale(0.2) rotate(360deg)';
+    enemyImg.style.opacity = '0.3';
+
+    setTimeout(() => {
+        log.textContent = `Shaking...`;
+        
+        setTimeout(() => {
+            log.textContent = `Shaking... (Double shake!)`;
+            
+            setTimeout(() => {
+                log.textContent = `Shaking... (Triple shake!!!)`;
+                
+                setTimeout(() => {
+                    if (Math.random() < finalChance) {
+                        // Caught Successfully
+                        enemyImg.style.display = 'none';
+                        log.textContent = `Gotcha! Wild ${activeWildPokemon.name} was successfully caught! 🎉`;
+                        caughtCount++;
+                        document.getElementById('caughtCount').textContent = caughtCount;
+                        isBattleOngoing = false;
+                        setTimeout(endBattleScreen, 2200);
+                    } else {
+                        // Broke Free
+                        enemyImg.style.transform = 'scale(1) rotate(0deg)';
+                        enemyImg.style.opacity = '1';
+                        log.textContent = `Oh no! The wild ${activeWildPokemon.name} broke free!`;
+                        setTimeout(() => {
+                            executeEnemyTurn();
+                        }, 1000);
+                    }
+                }, 1000);
+            }, 800);
+        }, 800);
+    }, 800);
+}
+
+// Run Escape
+window.escapeBattle = function() {
+    const log = document.getElementById('battleLog');
+    document.getElementById('actionControls').classList.add('hidden-screen');
+    log.textContent = `Escaped safely!`;
+    isBattleOngoing = false;
+    setTimeout(endBattleScreen, 1200);
+}
+
+function endBattleScreen() {
+    // Reset layout
+    document.getElementById('enemySpriteImg').style.display = 'block';
+    document.getElementById('enemySpriteImg').style.transform = 'none';
+    document.getElementById('enemySpriteImg').style.opacity = '1';
+    
+    document.getElementById('battleStage').classList.add('hidden-screen');
+    document.getElementById('exploreStage').classList.remove('hidden-screen');
+}
+
+
+// ==========================================
+// 4. INTERACTIVE NAVIGATION CONTROLS
+// ==========================================
+
+const portalScreen = document.getElementById('homeScreenPortal');
+const historyScreen = document.getElementById('historyScreen');
+const gameScreen = document.getElementById('gameScreen');
+const pokedexApp = document.getElementById('pokedexApp');
+
+// Portal -> Pokédex Trigger
+document.getElementById('enterPokedexBtn').addEventListener('click', () => {
+    portalScreen.style.opacity = '0';
+    portalScreen.style.transform = 'scale(0.95)';
+    setTimeout(() => {
+        portalScreen.classList.add('hidden-screen');
+        pokedexApp.classList.remove('hidden-screen');
+        pokedexApp.style.opacity = '1';
+        pokedexApp.style.transform = 'scale(1)';
+    }, 300);
+});
+
+// Portal -> History Encyclopedia Trigger
+document.getElementById('openHistoryBtn').addEventListener('click', () => {
+    portalScreen.style.opacity = '0';
+    portalScreen.style.transform = 'scale(0.95)';
+    setTimeout(() => {
+        portalScreen.classList.add('hidden-screen');
+        historyScreen.classList.remove('hidden-screen');
+        historyScreen.style.opacity = '1';
+        historyScreen.style.transform = 'scale(1)';
+    }, 300);
+});
+
+// Portal -> Custom Game Engine Trigger
+document.getElementById('enterGameBtn').addEventListener('click', () => {
+    portalScreen.style.opacity = '0';
+    portalScreen.style.transform = 'scale(0.95)';
+    setTimeout(() => {
+        portalScreen.classList.add('hidden-screen');
+        gameScreen.classList.remove('hidden-screen');
+        gameScreen.style.opacity = '1';
+        gameScreen.style.transform = 'scale(1)';
+    }, 300);
+});
+
+// History -> Back to Portal Trigger
+document.getElementById('backToPortalBtn').addEventListener('click', () => {
+    historyScreen.style.opacity = '0';
+    historyScreen.style.transform = 'scale(0.95)';
+    setTimeout(() => {
+        historyScreen.classList.add('hidden-screen');
+        portalScreen.classList.remove('hidden-screen');
+        portalScreen.style.opacity = '1';
+        portalScreen.style.transform = 'scale(1)';
+    }, 300);
+});
+
+// Game -> Back to Portal Trigger
+document.getElementById('backToPortalFromGame').addEventListener('click', () => {
+    gameScreen.style.opacity = '0';
+    gameScreen.style.transform = 'scale(0.95)';
+    setTimeout(() => {
+        gameScreen.classList.add('hidden-screen');
+        portalScreen.classList.remove('hidden-screen');
+        portalScreen.style.opacity = '1';
+        portalScreen.style.transform = 'scale(1)';
+    }, 300);
+});
+
+// Pokedex -> Back to Portal Trigger
+document.getElementById('pokedexBackBtn').addEventListener('click', () => {
+    pokedexApp.style.opacity = '0';
+    pokedexApp.style.transform = 'scale(0.95)';
+    setTimeout(() => {
+        pokedexApp.classList.add('hidden-screen');
+        portalScreen.classList.remove('hidden-screen');
+        portalScreen.style.opacity = '1';
+        portalScreen.style.transform = 'scale(1)';
+    }, 300);
+});
+
+
+// START EXECUTION FLOW
+initFirebaseSecurely();
 fetchPokemons();
 
 </script>
